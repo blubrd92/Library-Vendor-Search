@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Build tooling for the Library Vendor Search browser extension (Chrome + Edge + Firefox).",
   "scripts": {
-    "package:extension": "node build-zips.mjs"
+    "package:extension": "node build-zips.mjs",
+    "build:store": "node tools/store-images/build.mjs"
   },
   "devDependencies": {
     "webextension-polyfill": "0.12.0"

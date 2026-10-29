@@ -71,18 +71,19 @@ Click **Edit details** on the language row. Required:
 - **Description**, 250 to 10,000 characters. See §C below: the text lives in
   `STORE_LISTING.md` (Store description & summary), already over the 250
   minimum. Edit it there, not here, so all three stores stay in step.
-- **Extension logo** — 300×300 px recommended (128×128 minimum). The repo ships
-  `images/icon-128.png`; that satisfies the minimum, but exporting a **300×300**
-  PNG looks sharper in the store.
+- **Extension logo**: 300×300 px recommended (128×128 minimum). Upload
+  `dist/store-images/logo-edge-300x300.png` from `npm run build:store`; the
+  shipped `images/icon-128.png` only meets the minimum.
 - **Name** and **short description** are pulled from the manifest
   (`Library Vendor Search` / "Select text, right-click, and search Ingram,
   Brodart, Libraria, WorldCat, or your library catalog.").
 
 Strongly recommended (improves listing quality / approval odds):
 - **Screenshots** — up to 6, at **1280×800** or 640×480. At least **one** is
-  expected. Good shots: the right-click menu showing "Search Library Vendors",
-  and the popup with the vendor toggles.
-- **Small promotional tile** — 440×280 (optional).
+  expected. Upload the five `screenshot-*` files from `npm run build:store`
+  (in `dist/store-images/`), in number order.
+- **Small promotional tile**: 440×280 (optional): `promo-small-440x280.png`.
+  The large tile (1400×560, PNG) is `marquee-1400x560.png`.
 - **Search terms** — up to 7 phrases / 21 words, e.g. `library`, `cataloging`,
   `book vendor`, `Ingram`, `Brodart`, `Libraria`/`WorldCat`, `acquisitions`
   (7 phrases max, so pair or drop one as needed).

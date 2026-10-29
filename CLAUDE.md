@@ -44,6 +44,8 @@ All source lives in `library_vendor_search/`:
 Repo-root tooling (not part of the shipped extension):
 
 - `build-zips.mjs` / `package.json` — the two-zip cross-store build.
+- `tools/store-images/`: rebuilds the store listing images (`npm run
+  build:store`). See "Store images" below.
 - `STORE_LISTING.md` — publish/re-submit playbook, release notes, per-store
   gotchas. **Read this before any store upload.**
 - `LICENSE` — proprietary, with the bundled polyfill's MPL-2.0 notice.
@@ -124,6 +126,36 @@ Repo-root tooling (not part of the shipped extension):
 The build only mutates *copies* of the manifest — never the source. See
 `STORE_LISTING.md` for upload steps and per-store gotchas.
 
+## Store images
+
+`npm run build:store` writes every store listing image to `dist/store-images/`
+(gitignored; the images are uploaded by hand, see `STORE_LISTING.md` "Store
+images" for which file goes where): the 440x280 small promo tile, the 1400x560
+marquee / Edge large tile, five 1280x800 screenshots, and a 300x300 Edge logo.
+It needs `npm install --no-save playwright-core` and a Chromium (in a Claude
+Code cloud sandbox it finds `/opt/pw-browsers/chromium`; elsewhere set
+`PLAYWRIGHT_CHROMIUM` or run `npx playwright install chromium`), and it fetches
+Inter and Source Serif 4 from Google Fonts. Neither is in `package.json`.
+
+- `build.mjs` is the engine. It runs the real `catalog.js` and `background.js`
+  in `node:vm` against a `browser` stub and records what `createMenus()`
+  builds, so the menu strings in the images are the shipped ones. It renders
+  the real `options.html` / `options.js` in headless Chromium with only the
+  polyfill swapped for a stub that answers `storage.sync.get` with sample
+  settings, and types the catalog address with real keystrokes so the hint is
+  `options.js`'s own. Each image renders at 2x, is downscaled in the browser,
+  and is written as a 24-bit RGB PNG by a small `node:zlib` encoder.
+- `templates.mjs` holds everything you would edit: the sample selection, the
+  settings shown, the captions, the redrawn mark (`MARK`), and the layouts.
+  The marquee and `screenshot-0-overview` share one `hero()` template.
+- What is not real: the context menu is an HTML replica with neutral styling
+  (a browser draws its own menu, which headless Chromium can't capture), the
+  review page and every title on it are invented, Inter stands in for the
+  system UI font the popup asks for, and vendor sites appear only as tab labels.
+- The brand in the store art is the toolbar icon's book and magnifier on its
+  steel blue (`#38689a`). The popup's "LV" badge appears only inside the real
+  popup capture.
+
 ## Bumping the version
 
 Update `version` in `manifest.json` when shipping changes (currently `7.11.0`).
@@ -140,6 +172,15 @@ the build reads the shipped version from `manifest.json`.
 - polyfill load order — `background.js` `importScripts` guard,
   `content_scripts[].js[0]`, and the `options.html` `<script>` all load
   `vendor/browser-polyfill.min.js` first.
+- `tools/store-images/build.mjs` drives the popup by id and class:
+  `#catalogInstance` (typed into), and the clips in `templates.mjs`
+  `POPUP_SCENES` (`.card:nth-of-type(2)` is the Supplementary card,
+  `.card:nth-of-type(3)` the Search card). Reorder or rename those and the
+  build fails or crops the wrong card. It also reads `VENDORS`,
+  `createMenus()`, `getMenuSettings()`, `fanOutTargets()`, `sanitizeTerm()` and
+  `normalizeBiblioCommonsInstance()` by name, and `templates.mjs` expects the
+  `vendorParent` / `searchAllVendors` menu ids. After any visible change to
+  the popup or the menu, re-run `npm run build:store` and re-upload.
 - `catalog.js` ↔ its three loaders: `background.js` `importScripts`,
   `manifest.json background.scripts`, and `options.html` `<script>`. Adding a
   shared file means touching all three.

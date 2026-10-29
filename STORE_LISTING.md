@@ -146,18 +146,36 @@ Select text, right-click, and search Ingram, Brodart, Libraria, WorldCat, or you
 Highlight a title, author, or ISBN on any page, right-click, and search it on Ingram, Brodart, Libraria, WorldCat, or your library's own BiblioCommons catalog, with the term already filled in.
 ```
 
-### Long description (1,366 chars; Edge needs at least 250, Chrome allows up to 16,000)
+### Long description (1,838 chars counting line breaks; Edge needs at least 250, Chrome allows up to 16,000)
 ```
 Library Vendor Search is a right-click tool for librarians and acquisitions staff. Highlight any text on a web page (a title, an author, an ISBN), right-click it, and pick where to search. The extension opens that site in a new tab with your selected term already entered, saving you the copy-paste round trip.
 
 Book vendors: Ingram (ipage), Brodart (Bibz), and Libraria. These are the purchasing portals you order from, reached through your library's existing login.
 
-Lookup sources: WorldCat, for checking holdings and editions with no account needed, and your own library's catalog. Enter your library's BiblioCommons address in the popup once and your catalog joins the right-click menu alongside the vendors.
+Lookup sources: WorldCat, for checking holdings and editions with no account needed, and your own library's catalog. Enter your library's BiblioCommons address in the popup once and your catalog joins the right-click menu alongside the vendors. Paste the address in any form (the short name, the address, or a whole search link) and the popup shows the one catalog it will search. Both lookups are off until you switch them on, and they sit below a divider in the menu, apart from the vendors.
 
-Everything is set from the toolbar popup. Turn individual sources on or off. Add a single "Search all vendors" item that opens every enabled vendor at once, each in its own tab, and choose whether the supplementary sources join it. Choose whether new tabs open in the foreground or the background. You can also clean up the selected text before searching, which removes stray colons, commas, and the word "by" so that a copied "Dune: A Novel, by Frank Herbert" behaves in a vendor search box.
+Everything is set from the toolbar popup. Turn individual sources on or off. Add a single "Search all vendors" item (off by default) that opens every enabled vendor at once, each in its own tab beside the page you're on, and choose whether WorldCat and your catalog join it, in which case it becomes "Search all sources". Choose whether new tabs open in the foreground or the background. The selected text is also cleaned up before searching, which removes stray colons, commas, and the word "by" so that a copied "Dune: A Novel, by Frank Herbert" behaves in a vendor search box. That is on by default, and you can switch it off to search exactly what you selected.
 
 Your data stays on your device. The extension stores only your own preferences and the term you are currently searching, in the browser's own storage. Nothing is collected, and nothing is sent to any server.
 ```
+
+---
+
+## Store images
+
+`npm run build:store` rebuilds every listing image into `dist/store-images/`
+(see `tools/store-images/` and the "Store images" section of `CLAUDE.md`).
+Where each one goes:
+
+| File | Chrome | Edge | AMO |
+|------|--------|------|-----|
+| `promo-small-440x280.png` | Small promo tile (required) | Small promotional tile | (no slot) |
+| `marquee-1400x560.png` | Marquee promo tile | Large promotional tile | (no slot) |
+| `screenshot-0-overview` ... `screenshot-4-clean-text` (1280x800) | Screenshots, all five (max 5) | Screenshots (max 6) | Screenshots |
+| `logo-edge-300x300.png` | (uses the manifest icon) | Extension logo | (uses the manifest icon) |
+
+Upload the screenshots in number order. Rebuild and re-upload after any
+visible change to the popup or the menu.
 
 ---
 
