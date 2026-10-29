@@ -131,7 +131,12 @@ The build only mutates *copies* of the manifest — never the source. See
 `npm run build:store` writes every store listing image to `dist/store-images/`
 (gitignored; the images are uploaded by hand, see `STORE_LISTING.md` "Store
 images" for which file goes where): the 440x280 small promo tile, the 1400x560
-marquee / Edge large tile, five 1280x800 screenshots, and a 300x300 Edge logo.
+marquee / Edge large tile, five 1280x800 screenshots, a 300x300 Edge logo,
+and the extension's own icons (`extension-icon-16/48/128.png`). The icons are
+not uploaded on their own: when the mark changes, copy them over
+`library_vendor_search/images/icon-*.png` and bump the version, since they ship
+in the zips. `npm run package:extension` clears only old zips from `dist/`, so
+the two builds can run in either order.
 It needs `npm install --no-save playwright-core` and a Chromium (in a Claude
 Code cloud sandbox it finds `/opt/pw-browsers/chromium`; elsewhere set
 `PLAYWRIGHT_CHROMIUM` or run `npx playwright install chromium`), and it fetches
@@ -146,7 +151,8 @@ Inter and Source Serif 4 from Google Fonts. Neither is in `package.json`.
   `options.js`'s own. Each image renders at 2x, is downscaled in the browser,
   and is written as a 24-bit RGB PNG by a small `node:zlib` encoder.
 - `templates.mjs` holds everything you would edit: the sample selection, the
-  settings shown, the captions, the redrawn mark (`MARK`), and the layouts.
+  settings shown, the captions, the redrawn mark (`MARK`, plus `MARK_SMALL`
+  for the 16px icon), and the layouts.
   The marquee and `screenshot-0-overview` share one `hero()` template.
 - What is not real: the context menu is an HTML replica with neutral styling
   (a browser draws its own menu, which headless Chromium can't capture), the

@@ -88,6 +88,19 @@ export const MARK = (size, fg = '#fff', bg = BRAND) => `
         stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
+/* The same mark simplified for the 16px toolbar icon: one page edge, no
+   arrow in the lens, drawn on a 16-unit grid so lines land on pixels. */
+export const MARK_SMALL = (fg = '#fff', bg = BRAND) => `
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.5 6.5 V12.5 H7 L8 13.5 L9 12.5 H13.5 V6.5" fill="none" stroke="${fg}" stroke-width="1"/>
+  <path fill="${fg}" d="M3.5 5 Q5.8 4.4 8 5.6 V12 Q5.8 11 3.5 11.5 Z"/>
+  <path fill="${fg}" d="M8 5.6 Q10.2 4.4 12.5 5 V11.5 Q10.2 11 8 12 Z"/>
+  <circle cx="10.6" cy="4.6" r="3.1" fill="${bg}"/>
+  <path d="M12.4 6.4 L14.3 8.3" stroke="${bg}" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="10.6" cy="4.6" r="1.9" fill="${bg}" stroke="${fg}" stroke-width="1.1"/>
+  <path d="M12.1 6.1 L13.9 7.9" stroke="${fg}" stroke-width="1.5" stroke-linecap="round"/>
+</svg>`;
+
 /**
  * The store images, keyed by output filename. Each is { w, h, html },
  * rendered at exactly w x h CSS pixels.
@@ -97,6 +110,9 @@ export const MARK = (size, fg = '#fff', bg = BRAND) => `
  *   1400x560   Chrome marquee (needed to be featured); Edge large tile (PNG)
  *   1280x800   screenshots: Chrome (max 5), Edge (max 6), Firefox
  *   300x300    Edge extension logo (recommended over the 128px icon)
+ * Plus the extension's own icons (extension-icon-16/48/128.png). These are
+ * not uploaded anywhere: copy them over library_vendor_search/images/icon-*.png
+ * when the mark changes, and bump the version, since they ship in the zips.
  * Firefox has no promo tile slots, so screenshot-0-overview carries the
  * marquee's pitch there. Five screenshots in all, Chrome's ceiling.
  */
@@ -372,5 +388,10 @@ body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; ov
       html: `<style>${BASE_CSS}</style><div class="blue" style="background:${BRAND}"></div>
         <div style="position:absolute;inset:0;display:grid;place-items:center">${MARK(300)}</div>`,
     },
+    ...Object.fromEntries([16, 48, 128].map(n => [`extension-icon-${n}.png`, {
+      w: n, h: n,
+      html: `<style>* { margin: 0; padding: 0; } svg { display: block; }</style>
+        <div style="position:absolute;inset:0;background:${BRAND}">${n === 16 ? MARK_SMALL() : MARK(n)}</div>`,
+    }])),
   };
 }

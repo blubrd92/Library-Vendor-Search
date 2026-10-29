@@ -176,6 +176,7 @@ Where each one goes:
 | `marquee-1400x560.png` | Marquee promo tile | Large promotional tile | (no slot) |
 | `screenshot-0-overview` ... `screenshot-4-clean-text` (1280x800) | Screenshots, all five (max 5) | Screenshots (max 6) | Screenshots |
 | `logo-edge-300x300.png` | (uses the manifest icon) | Extension logo | (uses the manifest icon) |
+| `extension-icon-16/48/128.png` | not uploaded: these are the shipped `images/icon-*.png`; copy them in and bump the version when the mark changes | | |
 
 Upload the screenshots in number order. Rebuild and re-upload after any
 visible change to the popup or the menu.

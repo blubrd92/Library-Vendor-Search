@@ -21,7 +21,7 @@
 //
 // Usage: npm run package:extension   (or: node build-zips.mjs)
 
-import { rm, mkdir, cp, readFile, writeFile } from 'node:fs/promises';
+import { rm, mkdir, cp, readFile, readdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -63,8 +63,12 @@ async function main() {
   const { name, version } = sourceManifest;
   const slug = slugify(name);
 
-  await rm(DIST, { recursive: true, force: true });
+  // Clear old zips only: dist/ also holds the store images from
+  // `npm run build:store`, which a zip build has no reason to delete.
   await mkdir(DIST, { recursive: true });
+  for (const f of await readdir(DIST)) {
+    if (f.endsWith('.zip')) await rm(join(DIST, f), { force: true });
+  }
   await rm(STAGE, { recursive: true, force: true });
 
   const results = [];
