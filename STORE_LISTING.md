@@ -75,6 +75,9 @@ a `<script>` tag in `options.html`), so they need no guard.
 
 ### Release notes
 
+#### 7.11.1
+- Refreshed the extension icons (16, 48 and 128 px). Same open book and magnifier on the same blue, redrawn so it is sharp at every size; the small toolbar icon is simplified so it still reads at 16 px. Nothing about how the extension works has changed.
+
 #### 7.11.0
 - "Search all vendors" now covers the book vendors only by default. WorldCat and your library catalog keep their own menu items, so a sweep of where to order from doesn't also open the two lookups.
 - A new popup option, "Include supplementary sources", opts them back in. The menu item is then named "Search all sources" so its title matches what it opens. Either way the item is hidden unless it would open more than one tab.

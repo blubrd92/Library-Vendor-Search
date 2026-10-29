@@ -1,6 +1,6 @@
 {
   "name": "library-vendor-search",
-  "version": "7.11.0",
+  "version": "7.11.1",
   "private": true,
   "type": "module",
   "description": "Build tooling for the Library Vendor Search browser extension (Chrome + Edge + Firefox).",
